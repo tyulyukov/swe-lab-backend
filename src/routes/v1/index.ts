@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
 import auth from './auth';
-import users from './users';
+import eventRegistrations from './event-registrations';
+import events from './events';
 
 const router = Router();
 
 router.use('/auth', auth);
-router.use('/users', users);
+router.use('/events', events);
+router.use('/event-registrations', eventRegistrations);
 
 export default router;

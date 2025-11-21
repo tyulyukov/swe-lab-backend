@@ -14,6 +14,8 @@ describe('Register', () => {
 
   const userPassword = 'pass1';
   const user = new User();
+  user.first_name = 'Brandon';
+  user.last_name = 'Mayhew';
   user.email = 'brandon.mayhew@test.com';
   user.password = userPassword;
   user.hashPassword();
@@ -24,9 +26,13 @@ describe('Register', () => {
   });
 
   it('should register a new user', async () => {
-    const res = await request(app)
-      .post('/v1/auth/register')
-      .send({ email: user.email, password: userPassword, passwordConfirm: userPassword });
+    const res = await request(app).post('/v1/auth/register').send({
+      email: user.email,
+      password: userPassword,
+      passwordConfirm: userPassword,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    });
     expect(res.status).to.equal(200);
     expect(res.body.message).to.equal('User successfully created.');
     expect(res.body.data).to.be.an('null');
@@ -34,12 +40,20 @@ describe('Register', () => {
   });
 
   it('should report error when email already exists', async () => {
-    let res = await request(app)
-      .post('/v1/auth/register')
-      .send({ email: user.email, password: userPassword, passwordConfirm: userPassword });
-    res = await request(app)
-      .post('/v1/auth/register')
-      .send({ email: user.email, password: userPassword, passwordConfirm: userPassword });
+    let res = await request(app).post('/v1/auth/register').send({
+      email: user.email,
+      password: userPassword,
+      passwordConfirm: userPassword,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    });
+    res = await request(app).post('/v1/auth/register').send({
+      email: user.email,
+      password: userPassword,
+      passwordConfirm: userPassword,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    });
     expect(res.status).to.equal(400);
     expect(res.body.errorType).to.equal('General');
     expect(res.body.errorMessage).to.equal('User already exists');

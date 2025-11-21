@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
 
-import { Role } from '../entities/users/types';
+import { UserRole } from '../entities/users/types';
 import { User } from '../entities/users/User';
 
 export class SeedUsers1590519635401 implements MigrationInterface {
@@ -8,82 +8,82 @@ export class SeedUsers1590519635401 implements MigrationInterface {
     let user = new User();
     const userRepository = getRepository(User);
 
-    user.username = 'Heisenberg';
-    user.name = 'Walter White';
+    user.first_name = 'Walter';
+    user.last_name = 'White';
     user.email = 'admin@admin.com';
     user.password = 'pass1';
     user.hashPassword();
-    user.role = 'ADMINISTRATOR' as Role;
+    user.role = UserRole.SPEAKER;
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Jesse';
-    user.name = 'Jesse Pinkman';
+    user.first_name = 'Jesse';
+    user.last_name = 'Pinkman';
     user.email = 'standard@standard.com';
     user.password = 'pass1';
     user.hashPassword();
-    user.role = 'STANDARD' as Role;
+    user.role = UserRole.STANDARD;
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Sky';
-    user.name = 'Skyler White';
+    user.first_name = 'Skyler';
+    user.last_name = 'White';
     user.email = 'skyler.white@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Hank';
-    user.name = 'Hank Schrader';
+    user.first_name = 'Hank';
+    user.last_name = 'Schrader';
     user.email = 'hank.schrader@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Marie';
-    user.name = 'Marie Schrader';
+    user.first_name = 'Marie';
+    user.last_name = 'Schrader';
     user.email = 'marie.schrader@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'The Lawyer';
-    user.name = 'Saul Goodman';
+    user.first_name = 'Saul';
+    user.last_name = 'Goodman';
     user.email = 'saul.goodman@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Gus';
-    user.name = 'Gustavo Fring';
+    user.first_name = 'Gustavo';
+    user.last_name = 'Fring';
     user.email = 'gustavo.fring@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Mike';
-    user.name = 'Michael Ehrmantraut';
+    user.first_name = 'Michael';
+    user.last_name = 'Ehrmantraut';
     user.email = 'michael.ehrmantraut@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Tio';
-    user.name = 'Hector Salamanca';
+    user.first_name = 'Hector';
+    user.last_name = 'Salamanca';
     user.email = 'hector.salamanca@test.com';
     user.password = 'pass1';
     user.hashPassword();
     await userRepository.save(user);
 
     user = new User();
-    user.username = 'Tuco';
-    user.name = 'Alberto Salamanca';
+    user.first_name = 'Alberto';
+    user.last_name = 'Salamanca';
     user.email = 'alberto.salamanca@test.com';
     user.password = 'pass1';
     user.hashPassword();

@@ -1,15 +1,16 @@
 import bcrypt from 'bcryptjs';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
-import { Role, Language } from './types';
+import { UserRole, UserStatus } from './types';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     unique: true,
+    length: 255,
   })
   email: string;
 
@@ -17,39 +18,39 @@ export class User {
   password: string;
 
   @Column({
-    nullable: true,
-    unique: true,
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.STANDARD,
   })
-  username: string;
+  role: UserRole;
+
+  @Column({ type: 'varchar', length: 100 })
+  first_name: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  last_name: string;
+
+  @Column({ type: 'text', nullable: true })
+  avatar_url: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  position: string | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  contact_info: Record<string, unknown> | null;
+
+  @Column({ type: 'text', nullable: true })
+  short_description: string | null;
 
   @Column({
-    nullable: true,
+    type: 'enum',
+    enum: UserStatus,
+    default: UserStatus.PENDING,
   })
-  name: string;
+  status: UserStatus;
 
-  @Column({
-    default: 'STANDARD' as Role,
-    length: 30,
-  })
-  role: string;
-
-  @Column({
-    default: 'en-US' as Language,
-    length: 15,
-  })
-  language: string;
-
-  @Column()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
-
-  @Column()
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  setLanguage(language: Language) {
-    this.language = language;
-  }
 
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);

@@ -6,14 +6,14 @@ import { CustomError } from 'utils/response/custom-error/CustomError';
 
 export const changePassword = async (req: Request, res: Response, next: NextFunction) => {
   const { password, passwordNew } = req.body;
-  const { id, name } = req.jwtPayload;
+  const { id, first_name, last_name } = req.jwtPayload;
 
   const userRepository = getRepository(User);
   try {
     const user = await userRepository.findOne({ where: { id } });
 
     if (!user) {
-      const customError = new CustomError(404, 'General', 'Not Found', [`User ${name} not found.`]);
+      const customError = new CustomError(404, 'General', 'Not Found', [`User ${first_name} ${last_name} not found.`]);
       return next(customError);
     }
 

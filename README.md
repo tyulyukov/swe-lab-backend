@@ -1,17 +1,125 @@
-# TypeORM / Express / TypeScript RESTful API boilerplate
+# SWE Lab Backend - Event Management System
 
 [![CI][build-badge]][build-url]
 [![TypeScript][typescript-badge]][typescript-url]
 [![prettier][prettier-badge]][prettier-url]
 ![Heisenberg](misc/heisenberg.png)
 
-Boilerplate with focus on best practices and painless developer experience:
+Backend application for event management system with focus on best practices:
 
 - Minimal setup that can be extended 🔧
 - Spin it up with single command 🌀
 - TypeScript first
 - RESTful APIs
 - JWT authentication with role based authorization
+- Event management with speaker functionality
+- Event registration system with relational data
+
+## Implemented Entities
+
+### Event
+
+Represents an event that can be created by speakers. Fields include:
+
+- `id` (UUID)
+- `speaker_id` (UUID, references User)
+- `name` (string)
+- `is_online` (boolean)
+- `event_date` (timestamp)
+- `location` (string, nullable)
+- `link` (string, nullable)
+- `description` (text, nullable)
+- `image_urls` (text array, nullable)
+- `tags` (text array, nullable)
+- `limit_participants` (integer, nullable)
+- `created_at` (timestamp)
+
+**Relations:**
+
+- ManyToOne with User (speaker)
+- OneToMany with EventRegistration
+
+### EventRegistration
+
+Represents a user's registration for an event. Composite primary key: (event_id, user_id).
+
+- `event_id` (UUID)
+- `user_id` (UUID)
+- `comment` (text, nullable)
+- `created_at` (timestamp)
+
+**Relations:**
+
+- ManyToOne with Event
+- ManyToOne with User
+
+## API Endpoints
+
+### Events API (`/v1/events`)
+
+| Method   | Endpoint         | Auth Required | Description                     | Returns Relations                    |
+| -------- | ---------------- | ------------- | ------------------------------- | ------------------------------------ |
+| `GET`    | `/v1/events`     | No            | Get all events                  | ✅ Speaker, Registrations            |
+| `GET`    | `/v1/events/:id` | No            | Get event by ID                 | ✅ Speaker, Registrations with Users |
+| `POST`   | `/v1/events`     | Yes (JWT)     | Create new event (speaker only) | Event details                        |
+| `PATCH`  | `/v1/events/:id` | Yes (JWT)     | Update event (speaker only)     | Event details                        |
+| `DELETE` | `/v1/events/:id` | Yes (JWT)     | Delete event (speaker only)     | Success message                      |
+
+### Event Registrations API (`/v1/event-registrations`)
+
+| Method   | Endpoint                            | Auth Required | Description               | Returns Relations |
+| -------- | ----------------------------------- | ------------- | ------------------------- | ----------------- |
+| `GET`    | `/v1/event-registrations`           | Yes (JWT)     | Get user's registrations  | ✅ Event, User    |
+| `GET`    | `/v1/event-registrations/:event_id` | Yes (JWT)     | Get specific registration | ✅ Event, User    |
+| `POST`   | `/v1/event-registrations`           | Yes (JWT)     | Register for event        | ✅ Event, User    |
+| `PATCH`  | `/v1/event-registrations/:event_id` | Yes (JWT)     | Update registration       | ✅ Event, User    |
+| `DELETE` | `/v1/event-registrations/:event_id` | Yes (JWT)     | Cancel registration       | Success message   |
+
+## API Testing Screenshots
+
+### Login as Speaker
+
+![Step 1](misc/1.png)
+
+### Login as Standard User
+
+![Step 2](misc/2.png)
+
+### Create Event (Speaker Only)
+
+![Step 3](misc/3.png)
+
+### Get All Events
+
+Shows speaker relation via JOIN.
+![Step 4](misc/4.png)
+
+### Get Event by ID
+
+Shows speaker and registrations with nested users via JOIN.
+![Step 5](misc/5.png)
+
+### Register for Event
+
+Shows event and user relations via JOIN.
+![Step 6](misc/6.png)
+
+### Get All User Registrations
+
+Shows all user's registrations with event and user relations.
+![Step 7](misc/7.png)
+
+### Update Registration Comment
+
+![Step 8](misc/8.png)
+
+### Cancel Registration
+
+![Step 9](misc/9.png)
+
+### Delete Event (Speaker Only)
+
+![Step 10](misc/10.png)
 
 ## Requirements
 

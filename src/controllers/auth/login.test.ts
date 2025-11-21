@@ -4,7 +4,7 @@ import { agent as request } from 'supertest';
 import { getRepository, Connection, Repository } from 'typeorm';
 
 import { dbCreateConnection } from 'orm/dbCreateConnection';
-import { Role } from 'orm/entities/users/types';
+import { UserRole } from 'orm/entities/users/types';
 import { User } from 'orm/entities/users/User';
 
 import { app } from '../../';
@@ -15,12 +15,12 @@ describe('Login', () => {
 
   const userPassword = 'pass1';
   const user = new User();
-  user.username = 'Badger';
-  user.name = 'Brandon Mayhew';
+  user.first_name = 'Brandon';
+  user.last_name = 'Mayhew';
   user.email = 'brandon.mayhew@test.com';
   user.password = userPassword;
   user.hashPassword();
-  user.role = 'ADMINISTRATOR' as Role;
+  user.role = UserRole.SPEAKER;
 
   before(async () => {
     dbConnection = await dbCreateConnection();
