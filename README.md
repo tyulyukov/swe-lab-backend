@@ -121,6 +121,39 @@ Shows all user's registrations with event and user relations.
 
 ![Step 10](misc/10.png)
 
+## Architecture
+
+This project follows the **Separation of Concerns** principle with a layered architecture:
+
+```
+Request → Middleware (Validation) → Controller → Service → Repository → Database
+```
+
+### Layers
+
+| Layer          | Responsibility                                                                       |
+| -------------- | ------------------------------------------------------------------------------------ |
+| **Middleware** | Validates incoming request data using `validator` library before reaching controller |
+| **Controller** | Orchestrates request handling, calls service methods, transforms entities to DTOs    |
+| **Service**    | Contains business logic, interacts with repository, throws domain errors             |
+| **Repository** | Direct database access via TypeORM                                                   |
+
+### Architecture Screenshots
+
+#### Validation Error (400 Bad Request)
+
+![Validation Error](misc/11.png)
+
+#### Successful Event Creation with DTO Response
+
+![Successful Creation](misc/12.png)
+
+#### Get All Events - DTO Response Structure
+
+Shows transformed response with nested speaker and registrations:
+
+![Get All Events](misc/13.png)
+
 ## Requirements
 
 - [Node v16+](https://nodejs.org/)

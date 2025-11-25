@@ -1,4 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import isBoolean from 'validator/lib/isBoolean';
+import isEmpty from 'validator/lib/isEmpty';
+import isISO8601 from 'validator/lib/isISO8601';
 
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { ErrorValidation } from 'utils/response/custom-error/types';
@@ -7,21 +10,18 @@ export const validatorCreate = async (req: Request, res: Response, next: NextFun
   const { name, is_online, event_date } = req.body;
   const errorsValidation: ErrorValidation[] = [];
 
-  if (!name || name.trim().length === 0) {
+  if (isEmpty(name || '')) {
     errorsValidation.push({ name: 'Name is required' });
   }
 
-  if (is_online === undefined || is_online === null) {
-    errorsValidation.push({ is_online: 'is_online is required' });
+  if (is_online === undefined || is_online === null || !isBoolean(String(is_online))) {
+    errorsValidation.push({ is_online: 'is_online must be a boolean value' });
   }
 
-  if (!event_date) {
+  if (isEmpty(event_date || '')) {
     errorsValidation.push({ event_date: 'Event date is required' });
-  } else {
-    const date = new Date(event_date);
-    if (isNaN(date.getTime())) {
-      errorsValidation.push({ event_date: 'Invalid event date format' });
-    }
+  } else if (!isISO8601(event_date)) {
+    errorsValidation.push({ event_date: 'Invalid event date format. Use ISO8601 format.' });
   }
 
   if (errorsValidation.length !== 0) {

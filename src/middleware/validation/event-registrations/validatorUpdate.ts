@@ -1,17 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import isEmpty from 'validator/lib/isEmpty';
 import isUUID from 'validator/lib/isUUID';
 
 import { CustomError } from 'utils/response/custom-error/CustomError';
 import { ErrorValidation } from 'utils/response/custom-error/types';
 
-export const validatorCreate = async (req: Request, res: Response, next: NextFunction) => {
-  const { event_id } = req.body;
+export const validatorUpdate = async (req: Request, res: Response, next: NextFunction) => {
+  const { event_id } = req.params;
   const errorsValidation: ErrorValidation[] = [];
 
-  if (isEmpty(event_id || '')) {
-    errorsValidation.push({ event_id: 'Event ID is required' });
-  } else if (!isUUID(event_id)) {
+  if (!isUUID(event_id)) {
     errorsValidation.push({ event_id: 'Event ID must be a valid UUID' });
   }
 
@@ -19,7 +16,7 @@ export const validatorCreate = async (req: Request, res: Response, next: NextFun
     const customError = new CustomError(
       400,
       'Validation',
-      'Create registration validation error',
+      'Update registration validation error',
       null,
       null,
       errorsValidation,

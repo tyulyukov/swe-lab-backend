@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { getAll, getById, create, update, deleteById } from 'controllers/event-registrations';
 import { checkJwt } from 'middleware/checkJwt';
-import { validatorCreate } from 'middleware/validation/event-registrations';
+import { validatorCreate, validatorUpdate } from 'middleware/validation/event-registrations';
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.get('/:event_id', [checkJwt], getById);
 
 router.post('/', [checkJwt, validatorCreate], create);
 
-router.patch('/:event_id', [checkJwt], update);
+router.patch('/:event_id', [checkJwt, validatorUpdate], update);
 
 router.delete('/:event_id', [checkJwt], deleteById);
 
